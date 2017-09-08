@@ -4,7 +4,21 @@ from models import Ship,World
  
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
+
+class ModelSprite(arcade.Sprite):
+    def __init__(self, *args, **kwargs):
+        self.model = kwargs.pop('model', None)
  
+        super().__init__(*args, **kwargs)
+ 
+    def sync_with_model(self):
+        if self.model:
+            self.set_position(self.model.x, self.model.y)
+ 
+    def draw(self):
+        self.sync_with_model()
+        super().draw()
+
 class SpaceGameWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
@@ -14,10 +28,11 @@ class SpaceGameWindow(arcade.Window):
         
         self.ship_sprite = arcade.Sprite('images/ship.png')
         self.world = World(width, height)
+        self.ship_sprite = ModelSprite('images/ship.png',model=self.world.ship)
+
 
     def update(self, delta):
         self.world.update(delta)
-        self.ship_sprite.set_position(self.world.ship.x, self.world.ship.y)
  
  
     def on_draw(self):
