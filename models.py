@@ -1,6 +1,6 @@
 class Ship:
-    def __init__(self, x, y):
-    	self.world = world
+    def __init__(self, world, x, y):
+        self.world = world
         self.x = x
         self.y = y
  
